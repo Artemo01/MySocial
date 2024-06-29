@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using MySocialService.Mappers;
+using MySocialService.Services.API;
 
 namespace MySocialService.Controllers
 {
@@ -10,37 +10,25 @@ namespace MySocialService.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
-        public UsersController(UserManager<IdentityUser> userManager) 
-        {
-            this.userManager = userManager;
+        private readonly IUserService userService;
+        public UsersController(IUserService userService) 
+        {;
+            this.userService = userService;
         }
-
-        //ONLY FOR TEST. LATER IT WILL BE REFACTOR INTO MVC
 
         [HttpGet]
         public async Task<IActionResult> GetUserData()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var user = await this.userManager.FindByIdAsync(userId);
+            var user = await userService.GetCurrentUser(User);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found");
             }
 
-            var userData = new
-            {
-                user.UserName,
-                user.Email,
-                user.PhoneNumber,
-            };
+            var dto = UserMapper.MapToDto(user);
 
-            return Ok(userData);
+
+            return Ok(dto);
         }
     }
 }
