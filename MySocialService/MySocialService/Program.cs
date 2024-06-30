@@ -13,6 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+// Configure CORS
+
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyOrigin()
+            .AllowAnyMethod());
+});
+
 // Configure Swagger/OpenAPI
 
 builder.Services.AddEndpointsApiExplorer();
@@ -62,6 +73,8 @@ if (app.Environment.IsDevelopment())
 app.MapIdentityApi<UserModel>();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
