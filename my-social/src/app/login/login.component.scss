@@ -23,16 +23,29 @@
 }
 
 .login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background-color: #6c63ff;
   height: 40px;
   margin-top: 20px;
   border: none;
   border-radius: 15px;
   color: white;
+
+  &--disable {
+    background-color: gray;
+  }
 }
 
 .login-text {
   color: #6c63ff;
   text-decoration: none;
   cursor: pointer;
+
+  &--error {
+    color: #ed4337;
+    text-decoration: none;
+  }
 }

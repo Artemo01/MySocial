@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { LoginFormModel, LoginResponseModel } from '../models';
+import { LoginFormModel } from '../models';
 import { LoginService } from './login.service';
 
 @Component({
@@ -20,8 +19,10 @@ export class LoginComponent {
   readonly registerLabel = 'Register';
 
   public isLoading: boolean = false;
+  public isFormInvalid: boolean = false;
   public title = this.loginLabel;
   public loginForm: FormGroup<LoginFormModel>;
+  public errorMessage: string = '';
 
   constructor(
     private loginService: LoginService,
@@ -47,18 +48,24 @@ export class LoginComponent {
 
   public login() {
     if (this.loginForm.valid) {
+      this.isFormInvalid = false;
+      this.isLoading = true;
       const credentials = this.loginForm.value;
 
       this.loginService.login(credentials).subscribe({
         next: (response) => {
+          this.isLoading = false;
           const token = response.accessToken;
           localStorage.setItem('authToken', token);
           this.router.navigate(['/profile']);
         },
         error: (error) => {
+          this.isLoading = false;
           console.log('Error logging in: ', error);
         },
       });
+    } else {
+      this.isFormInvalid = true;
     }
   }
 }

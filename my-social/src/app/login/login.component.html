@@ -9,9 +9,22 @@
           <label>Password:</label>
           <input type="password" formControlName="password" />
           <a class="text-end login-text">Forgot password?</a>
-          <button class="login-button" type="submit" (click)="login()">
+          <button
+            [disabled]="isLoading"
+            class="login-button"
+            [ngClass]="{ 'login-button--disable': isLoading }"
+            (click)="login()"
+          >
             Login
+            <div
+              *ngIf="isLoading"
+              class="spinner-border spinner-border-sm"
+              role="status"
+            ></div>
           </button>
+          <a *ngIf="isFormInvalid" class="login-text--error">
+            * Email and Password fields are required
+          </a>
           <a class="text-end mt-3 login-text" (click)="changeView()">
             Don't have an account? <b>Register</b>
           </a>
