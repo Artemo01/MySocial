@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { LoginFormModel } from '../models';
 import { LoginService } from './login.service';
+import { ErrorService } from '../shared/error.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent {
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private errorService: ErrorService
   ) {
     this.loginForm = this.formBuilder.group<LoginFormModel>({
       email: new FormControl('', {
@@ -61,7 +63,8 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading = false;
-          console.log('Error logging in: ', error);
+          this.errorService.setError(error.statusText);
+          console.log(error);
         },
       });
     } else {
