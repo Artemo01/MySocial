@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -5,13 +6,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ErrorService {
-  private errorSubject = new BehaviorSubject<string | null>(null);
+  private errorSubject = new BehaviorSubject<HttpErrorResponse | null>(null);
 
-  public getError(): Observable<string | null> {
+  public getError(): Observable<HttpErrorResponse | null> {
     return this.errorSubject.asObservable();
   }
 
-  public setError(message: string) {
+  public setError(message: HttpErrorResponse) {
     this.errorSubject.next(message);
   }
 

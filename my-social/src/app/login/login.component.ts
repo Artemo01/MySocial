@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { LoginFormModel } from '../models';
+import { AuthModel, LoginFormModel, RegisterFormModel } from '../models';
 import { LoginService } from './login.service';
 import { ErrorService } from '../shared/error.service';
 
@@ -23,6 +23,7 @@ export class LoginComponent {
   public isFormInvalid: boolean = false;
   public title = this.loginLabel;
   public loginForm: FormGroup<LoginFormModel>;
+  public registerForm: FormGroup<RegisterFormModel>;
   public errorMessage: string = '';
 
   constructor(
@@ -41,11 +42,28 @@ export class LoginComponent {
         validators: [Validators.required],
       }),
     });
+
+    this.registerForm = this.formBuilder.group<RegisterFormModel>({
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+    });
   }
 
   public changeView() {
     this.title =
       this.title === this.loginLabel ? this.registerLabel : this.loginLabel;
+
+    this.isFormInvalid = false;
   }
 
   public login() {
@@ -63,8 +81,39 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorService.setError(error.statusText);
-          console.log(error);
+          this.errorService.setError(error);
+        },
+      });
+    } else {
+      this.isFormInvalid = true;
+    }
+  }
+
+  public register() {
+    const isConfirmPassword =
+      this.registerForm.controls.password.value ===
+      this.registerForm.controls.confirmPassword.value;
+
+    if (this.registerForm.valid && isConfirmPassword) {
+      this.isFormInvalid = false;
+      this.isLoading = true;
+
+      const credentials: AuthModel = {
+        email: this.registerForm.controls.email.value,
+        password: this.registerForm.controls.password.value,
+      };
+
+      this.loginService.register(credentials).subscribe({
+        next: () => {
+          this.loginForm.setValue({
+            email: this.registerForm.controls.email.value,
+            password: this.registerForm.controls.password.value,
+          });
+          this.login();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorService.setError(error);
         },
       });
     } else {

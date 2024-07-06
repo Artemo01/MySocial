@@ -2,7 +2,7 @@
   <div class="d-flex col-6 justify-content-center">
     <div class="login-card">
       <h1>{{ title }}</h1>
-      <ng-container *ngIf="title === loginLabel; else register">
+      <ng-container *ngIf="title === loginLabel; else registerTemplate">
         <div [formGroup]="loginForm" class="d-flex flex-column">
           <label>Email:</label>
           <input type="text" formControlName="email" />
@@ -42,17 +42,29 @@
 
 <modal-error></modal-error>
 
-<ng-template #register>
-  <form class="d-flex flex-column">
+<ng-template #registerTemplate>
+  <div [formGroup]="registerForm" class="d-flex flex-column">
     <label>Email:</label>
-    <input type="text" name="username" required />
+    <input type="text" formControlName="email" />
     <label>Password:</label>
-    <input type="password" name="password" required />
+    <input type="password" formControlName="password" />
     <label>Confirm Password:</label>
-    <input type="password" name="password" required />
-    <button class="login-button" type="submit">Register</button>
+    <input type="password" formControlName="confirmPassword" />
+    <button
+      [disabled]="isLoading"
+      class="login-button"
+      [ngClass]="{ 'login-button--disable': isLoading }"
+      (click)="register()"
+    >
+      Register
+      <div
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm"
+        role="status"
+      ></div>
+    </button>
     <a class="text-end mt-3 login-text" (click)="changeView()">
       Already have an account?<b>Login</b>
     </a>
-  </form>
+  </div>
 </ng-template>

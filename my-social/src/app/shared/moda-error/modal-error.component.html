@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Error</h5>
+        <h5 class="modal-title">{{ errorMessage.name }}</h5>
         <button
           type="button"
           class="close"
@@ -13,7 +13,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>{{ errorMessage }}</p>
+        <p>Error Code: {{ errorMessage.status }}</p>
+        <p>Message: {{ errorMessage.message }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">

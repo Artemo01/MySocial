@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginModel, LoginResponseModel } from '../models';
+import { AuthModel, LoginResponseModel } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +11,16 @@ export class LoginService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: Partial<LoginModel>): Observable<LoginResponseModel> {
+  public login(
+    credentials: Partial<AuthModel>
+  ): Observable<LoginResponseModel> {
     return this.http.post<LoginResponseModel>(
       `${this.apiUrl}/login`,
       credentials
     );
+  }
+
+  public register(credentials: Partial<AuthModel>): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, credentials);
   }
 }
