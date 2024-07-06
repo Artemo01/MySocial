@@ -50,7 +50,7 @@ export class LoginComponent {
       }),
       password: new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required],
+        validators: [Validators.required, errorService.passwordValidator()],
       }),
       confirmPassword: new FormControl('', {
         nonNullable: true,
@@ -59,14 +59,14 @@ export class LoginComponent {
     });
   }
 
-  public changeView() {
+  public changeView(): void {
     this.title =
       this.title === this.loginLabel ? this.registerLabel : this.loginLabel;
 
     this.isFormInvalid = false;
   }
 
-  public login() {
+  public login(): void {
     if (this.loginForm.valid) {
       this.isFormInvalid = false;
       this.isLoading = true;
@@ -89,7 +89,7 @@ export class LoginComponent {
     }
   }
 
-  public register() {
+  public register(): void {
     const isConfirmPassword =
       this.registerForm.controls.password.value ===
       this.registerForm.controls.confirmPassword.value;
