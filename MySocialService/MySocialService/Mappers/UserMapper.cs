@@ -16,5 +16,30 @@ namespace MySocialService.Mappers
                 PhoneNumber = model.PhoneNumber
             };
         }
+
+        public static PostDto MapToPostDto(PostModel model)
+        {
+            return new PostDto
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Content = model.Content,
+                CreatedDate = model.CreatedDate,
+                UserId = model.UserId,
+            };
+        }
+
+        public static PostModel MapToPostModel(PostDto dto)
+        {
+            return new PostModel
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Content = dto.Content,
+                CreatedDate = dto.CreatedDate,
+                UserId = dto.UserId,
+            };
+
+        }
     }
 }

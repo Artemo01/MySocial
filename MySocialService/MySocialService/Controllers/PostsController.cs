@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MySocialService.Data;
-using MySocialService.Models;
+using MySocialService.DTO;
+using MySocialService.Mappers;
+using MySocialService.Services;
 using MySocialService.Services.API;
-using System.Security.Claims;
 
 namespace MySocialService.Controllers
 {
@@ -12,31 +12,28 @@ namespace MySocialService.Controllers
     [Authorize]
     public class PostsController : ControllerBase
     {
-        private readonly DataContext dataContext;
+        private readonly IPostService postService;
 
-        public PostsController(DataContext dataContext)
+        public PostsController(IPostService postService)
         {
-            this.dataContext = dataContext;
+  
+            this.postService = postService;
         }
 
         [HttpGet]
-        public IActionResult GetPosts()
+        public async Task<IActionResult> GetPosts()
         {
-            var posts = dataContext.Posts.ToList();
-            return Ok(posts);
+            var posts = await postService.GetPosts();
+            var dto = posts.Select(UserMapper.MapToPostDto);
+            return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost(PostModel post)
+        public async Task<IActionResult> CreatePost(PostDto post)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            post.UserId = userId;
-            post.CreatedDate = DateTime.Now;
+            var newPost = await postService.CreatePost(User, UserMapper.MapToPostModel(post));
 
-            dataContext.Posts.Add(post);
-            await dataContext.SaveChangesAsync();
-
-            return Ok(post);
+            return Ok(UserMapper.MapToPostDto(newPost));
         }
     }
 }
