@@ -16,7 +16,7 @@ namespace MySocialService.Controllers
             this.userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("currentUser")]
         public async Task<IActionResult> GetUserData()
         {
             var user = await userService.GetCurrentUser(User);
@@ -28,6 +28,14 @@ namespace MySocialService.Controllers
             var dto = UserMapper.MapToDto(user);
 
 
+            return Ok(dto);
+        }
+
+        [HttpGet("allUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await userService.GetAllUsers();
+            var dto = users.Select(UserMapper.MapToDto);
             return Ok(dto);
         }
     }

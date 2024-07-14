@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MySocialService.Models;
 using MySocialService.Services.API;
 using System.Security.Claims;
@@ -23,6 +24,12 @@ namespace MySocialService.Services
             }
 
             return userModel;
+        }
+
+        public async Task<List<UserModel>> GetAllUsers()
+        {
+            var users = await userManager.Users.ToListAsync();
+            return users;
         }
     }
 }

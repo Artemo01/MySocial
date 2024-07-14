@@ -13,7 +13,7 @@ export class ProfileComponent {
   constructor(private http: HttpClient) {}
 
   public ngOnInit(): void {
-    this.http.get<any>('https://localhost:44371/users').subscribe({
+    this.http.get<any>('https://localhost:44371/users/currentUser').subscribe({
       next: (data) => {
         this.userData = data;
       },
