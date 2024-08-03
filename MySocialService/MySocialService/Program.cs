@@ -58,7 +58,7 @@ builder.Services.AddIdentityApiEndpoints<UserModel>()
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
 

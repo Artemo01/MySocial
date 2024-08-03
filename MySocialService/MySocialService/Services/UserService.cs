@@ -9,27 +9,22 @@ namespace MySocialService.Services
     public class UserService : IUserService
     {
         private readonly UserManager<UserModel> userManager;
+        private readonly IAuthService authService;
 
-        public UserService(UserManager<UserModel> userManager)
+        public UserService(UserManager<UserModel> userManager, IAuthService authService)
         {
             this.userManager = userManager;
+            this.authService = authService;
         }
 
         public async Task<UserModel?> GetCurrentUser(ClaimsPrincipal user)
         {
-            var userModel = await userManager.GetUserAsync(user);
-            if (userModel == null)
-            {
-                return null;
-            }
-
-            return userModel;
+            return await authService.GetCurrentUserAsync(user);
         }
 
         public async Task<List<UserModel>> GetAllUsers()
         {
-            var users = await userManager.Users.ToListAsync();
-            return users;
+            return await userManager.Users.ToListAsync();
         }
     }
 }
