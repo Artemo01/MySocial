@@ -1,10 +1,12 @@
-﻿using MySocialService.Models;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
+using MySocialService.DTO;
+using MySocialService.Models;
 
 namespace MySocialService.Services.API
 {
     public interface IAuthService
     {
-        Task<UserModel?> GetCurrentUserAsync(ClaimsPrincipal user);
+        Task<AuthResponseDto> Register(RegisterModel model);
+        Task<AuthResponseDto> Login(LoginModel model);
     }
 }

@@ -10,7 +10,5 @@ namespace MySocialService.Data
         {
             
         }
-
-        public DbSet<PostModel> Posts { get; set; }
     }
 }
