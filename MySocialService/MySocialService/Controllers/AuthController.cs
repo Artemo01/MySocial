@@ -16,14 +16,14 @@ namespace MySocialService.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto dto)
+        public async Task<ActionResult> Register(RegisterDto dto)
         {
             var responce = await authService.Register(dto.MapToModel());
             return Ok(responce);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponseDto>> Login(LoginDto dto)
+        public async Task<ActionResult> Login(LoginDto dto)
         {
             var result = await authService.Login(dto.MapToModel());
 

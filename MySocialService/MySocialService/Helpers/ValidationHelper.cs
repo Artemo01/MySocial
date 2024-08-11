@@ -2,11 +2,11 @@
 {
     public class ValidationHelper
     {
-        public static void CheckNullOrEmptyString(string value, string variableName)
+        public static void CheckNullOrEmptyString(string parameter, string parameterName)
         {
-            if (string.IsNullOrEmpty(value)) 
+            if (string.IsNullOrEmpty(parameter)) 
             { 
-                throw new ArgumentNullException($"Value of {variableName} can not be null or empty");
+                throw new ArgumentException ("Value cannot be empty.", parameterName);
             }
         }
     }
