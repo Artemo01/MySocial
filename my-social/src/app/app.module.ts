@@ -5,8 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './Components/navbar/navbar.component';
 import { RouterLink } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -17,6 +18,7 @@ import { RouterLink } from '@angular/router';
     MatToolbarModule,
     MatButtonModule,
     RouterLink,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
