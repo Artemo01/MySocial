@@ -4,6 +4,7 @@ import { LoginService } from '../login.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ErrorService } from 'src/app/shared/error-modal/error.service';
 import { AuthResponse } from '../login-models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -23,7 +24,8 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private router: Router
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -69,6 +71,7 @@ export class LoginFormComponent implements OnInit {
   private handleLoginSucces(token: string): void {
     if (token != null && token.length !== 0) {
       localStorage.setItem('Token', token);
+      this.router.navigate(['/home']);
     }
     console.log('SUCCES');
   }
