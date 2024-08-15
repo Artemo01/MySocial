@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ErrorService } from 'src/app/shared/error-modal/error.service';
+import { AuthResponse } from '../login-models';
 
 @Component({
   selector: 'app-login-form',
@@ -16,13 +13,17 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @UntilDestroy()
 export class LoginFormComponent implements OnInit {
   public hide: boolean = true;
+  public isLogging: boolean = false;
+  public showAlert: boolean = false;
+  public alertMessage: string = '';
   public passwordInputType: 'password' | 'text' = 'password';
 
   public form: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private errorService: ErrorService
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,17 +39,42 @@ export class LoginFormComponent implements OnInit {
   }
 
   public login(): void {
+    this.showAlert = false;
+    this.isLogging = true;
     this.loginService
       .login(this.form.value)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (response) => {
-          console.log('OK');
-          console.log(response);
+          this.isLogging = false;
+          this.handleLoginResponse(response);
         },
         error: (error) => {
-          console.log(error);
+          this.isLogging = false;
+          this.showModalError(error.message);
         },
       });
+  }
+
+  private showModalError(message: string): void {
+    this.errorService.showError(message);
+  }
+
+  private handleLoginResponse(response: AuthResponse): void {
+    response.isSuccess
+      ? this.handleLoginSucces(response.token)
+      : this.handleLoginError(response.message);
+  }
+
+  private handleLoginSucces(token: string): void {
+    if (token != null && token.length !== 0) {
+      localStorage.setItem('Token', token);
+    }
+    console.log('SUCCES');
+  }
+
+  private handleLoginError(message: string) {
+    this.showAlert = true;
+    this.alertMessage = message;
   }
 }

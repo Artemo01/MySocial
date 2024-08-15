@@ -1,0 +1,9 @@
+<div class="error-modal-wrapper">
+  <h1 mat-dialog-title>Unexpected error</h1>
+  <div mat-dialog-content>
+    <p>{{ data.message }}</p>
+  </div>
+  <div class="d-flex justify-content-end" mat-dialog-actions>
+    <button class="error-modal-button" mat-button (click)="close()">Ok</button>
+  </div>
+</div>

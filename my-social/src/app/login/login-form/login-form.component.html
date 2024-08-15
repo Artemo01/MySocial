@@ -25,12 +25,20 @@
     >
   </mat-form-field>
 
-  <button class="login-form-button" [disabled]="!form.valid" type="submit">
+  <button
+    class="login-form-button"
+    [disabled]="!form.valid || isLogging"
+    type="submit"
+  >
     Login
   </button>
 
   <div class="mt-3">
     <span>Don't have an account? </span>
     <a>Register</a>
+  </div>
+
+  <div *ngIf="showAlert" class="alert alert-danger mt-3" role="alert">
+    {{ alertMessage }}
   </div>
 </form>

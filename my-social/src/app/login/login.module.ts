@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [LoginComponent, LoginFormComponent],
@@ -16,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatIconModule,
     ReactiveFormsModule,
+    SharedModule,
   ],
 })
 export class LoginModule {}
