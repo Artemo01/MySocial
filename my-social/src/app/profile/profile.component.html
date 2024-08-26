@@ -1,1 +1,20 @@
-<p>profile works!</p>
+<div *ngIf="isLoading === false; else Loading" class="container">
+  <div class="card flex-row p-3 mt-5 w-100">
+    <img
+      class="profile-avatar m-3"
+      src="../../assets/undraw_male_avatar_g98d.svg"
+      alt="avatar"
+    />
+    <div class="d-flex flex-column p-4">
+      <h1 class="d-flex align-items-center profile-name h-50 m-0">
+        {{ userDetails.name }}
+      </h1>
+      <div class="h-50">
+        <p *ngIf="userDetails.email != null">email: {{ userDetails.email }}</p>
+        <p *ngIf="userDetails.phone != null">phone: {{ userDetails.phone }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #Loading><mat-spinner></mat-spinner></ng-template>

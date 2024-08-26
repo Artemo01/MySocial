@@ -18,7 +18,7 @@ namespace MySocialService.Controllers
 
         [Authorize]
         [HttpGet("currentUser")]
-        public async Task<ActionResult> GetCurrentUserDetails()
+        public async Task<ActionResult<UserDetailsDto>> GetCurrentUserDetails()
         {
             var user = await userService.GetCurrentUserDetails(User);
             return Ok(UserDetailsDto.MapToDto(user));
