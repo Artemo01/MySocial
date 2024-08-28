@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MySocialService.DTO;
 using MySocialService.Models;
 using MySocialService.Services.API;
-using System.Numerics;
 using System.Security.Claims;
 
 namespace MySocialService.Services
