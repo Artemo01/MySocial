@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MySocialService.Services.API;
 using MySocialService.Services;
+using MySocialService.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,12 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddSignalR()
+    .AddHubOptions<ChatHub>(options =>
+    {
+        options.EnableDetailedErrors = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -76,6 +83,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 var app = builder.Build();
 
@@ -99,5 +107,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
