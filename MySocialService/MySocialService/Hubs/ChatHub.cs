@@ -4,7 +4,6 @@ using System.Security.Claims;
 
 namespace MySocialService.Hubs
 {
-    [Authorize]
     public class ChatHub : Hub
     {
         public async Task SendMessageToUser(string receiverUserId, string message)

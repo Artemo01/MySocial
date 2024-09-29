@@ -97,9 +97,10 @@ app.UseHttpsRedirection();
 
 app.UseCors(options =>
 {
-    options.AllowAnyHeader();
-    options.AllowAnyMethod();
-    options.AllowAnyOrigin();
+    options.WithOrigins("http://localhost:4200")
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials();
 });
 
 app.UseAuthentication();

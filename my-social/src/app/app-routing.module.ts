@@ -19,6 +19,11 @@ const routes: Routes = [
       import('./profile/profile.module').then((m) => m.ProfileModule),
     canActivate: [authGuard],
   },
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then((m) => m.ChatModule),
+    canActivate: [authGuard],
+  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
 ];
