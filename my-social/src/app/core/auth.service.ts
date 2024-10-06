@@ -14,10 +14,23 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     const token = localStorage.getItem('Token');
-    return !!token;
+    return !!token && !this.isTokenExpired(token);
   }
 
   public getToken(): string | null {
     return localStorage.getItem('Token');
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const expiry = this.getTokenExpiry(token);
+    if (expiry) {
+      return Date.now() > expiry;
+    }
+    return false;
+  }
+
+  private getTokenExpiry(token: string): number | null {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp ? payload.exp * 1000 : null;
   }
 }

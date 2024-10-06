@@ -1,5 +1,5 @@
 <div *ngIf="isLoading === false; else Loading" class="container">
-  <div class="card flex-row p-3 mt-5 w-100">
+  <div class="card shadow flex-row p-3 mt-5 w-100">
     <img
       class="profile-avatar m-3"
       src="../../assets/undraw_male_avatar_g98d.svg"
@@ -15,6 +15,7 @@
       </div>
     </div>
   </div>
+  <add-post></add-post>
 </div>
 
 <ng-template #Loading><mat-spinner></mat-spinner></ng-template>

@@ -18,9 +18,9 @@ namespace MySocialService.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<PostDto>> CreatePost([FromBody] string content)
+        public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostDto createPostDto)
         {
-            var post = await postService.CreatePost(User, content);
+            var post = await postService.CreatePost(User, createPostDto.Content);
             var dto = PostDto.MapToDto(post);
             return Ok(dto);
         }

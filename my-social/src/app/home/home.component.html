@@ -1,1 +1,6 @@
-<p>home works!</p>
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <add-post></add-post>
+  <div *ngFor="let post of posts">
+    <social-post [post]="post"></social-post>
+  </div>
+</div>
