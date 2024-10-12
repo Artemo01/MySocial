@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySocialService.Data;
-using MySocialService.DTO;
 using MySocialService.Models;
 using MySocialService.Services.API;
 using System.Security.Claims;
@@ -29,13 +28,10 @@ namespace MySocialService.Services
             return posts;
         }
 
-        public async Task<PostModel> CreatePost(ClaimsPrincipal claimsPrincipal, string content)
+        public async Task<PostModel> CreatePost(ClaimsPrincipal GetUserId, string content)
         {
-            var userId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null) throw new ArgumentException("User not found");
-
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null) throw new ArgumentException("User not found");
+            var userId = this.GetUserId(GetUserId);
+            var user = await GetUserByIdAsync(userId);
 
             var post = new PostModel
             {
@@ -50,6 +46,32 @@ namespace MySocialService.Services
             await dataContext.SaveChangesAsync();
 
             return post;
+        }
+
+        public async Task DeletePost(ClaimsPrincipal claimsPrincipal, string postId)
+        {
+            var userId = GetUserId(claimsPrincipal);
+            var post = await dataContext.Posts.FirstOrDefaultAsync(p => p.Id == postId && p.UserId == userId);
+            if (post == null) throw new UnauthorizedAccessException("User does not have permission to delete this post.");
+
+            dataContext.Posts.Remove(post);
+            await dataContext.SaveChangesAsync();
+        }
+
+        private string GetUserId(ClaimsPrincipal claimsPrincipal)
+        {
+            var userIdClaim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) throw new ArgumentException("User not found");
+
+            return userIdClaim.Value;
+        }
+
+        private async Task<UserModel> GetUserByIdAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) throw new ArgumentException("User not found");
+            
+            return user;
         }
     }
 }

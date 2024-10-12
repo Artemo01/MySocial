@@ -31,5 +31,12 @@ namespace MySocialService.Controllers
             var posts = await postService.GetAllPosts();
             return Ok(posts.Select(PostDto.MapToDto));
         }
+
+        [HttpDelete("{postId}")]
+        public async Task<IActionResult> DeletePost(string postId)
+        {
+            await postService.DeletePost(User, postId);
+            return NoContent();
+        }
     }
 }

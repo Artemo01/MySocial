@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AddPostService } from './add-post.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'add-post',
@@ -12,6 +13,8 @@ import { FormControl, Validators } from '@angular/forms';
 export class AddPostComponent {
   public postContentControl = new FormControl('', [Validators.required]);
 
+  private snackBar = inject(MatSnackBar);
+
   constructor(private addPostService: AddPostService) {}
 
   public addPost(): void {
@@ -20,11 +23,23 @@ export class AddPostComponent {
       this.addPostService
         .addPost(this.postContentControl.value)
         .pipe(untilDestroyed(this))
-        .subscribe(() => this.postAddedSuccessfully());
+        .subscribe({
+          next: () => this.displaySnackBar('Post added successfully'),
+          error: () => this.displaySnackBar('Error'),
+          complete: () => this.resetPostForm(),
+        });
     }
   }
 
-  private postAddedSuccessfully(): void {
+  private displaySnackBar(message: string): void {
+    this.snackBar.open(message, 'Ok', {
+      duration: 3000,
+      horizontalPosition: 'start',
+      verticalPosition: 'bottom',
+    });
+  }
+
+  private resetPostForm(): void {
     this.postContentControl.setValue(null);
     this.postContentControl.markAsUntouched();
   }

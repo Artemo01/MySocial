@@ -1,5 +1,15 @@
 <div class="card shadow post-wrapper p-4 mt-3">
-  <p>{{ post.userName }}</p>
-  <p>{{ post.createdAt }}</p>
-  <p>{{ post.content }}</p>
+  <div class="d-flex flex-row">
+    <img
+      class="post-profile-image"
+      src="../../../assets/undraw_male_avatar_g98d.svg"
+      alt="profile"
+    />
+    <div class="d-flex flex-column justify-content-around">
+      <span>{{ post.userName }}</span>
+      <span>{{ post.createdAt | date : "mediumDate" }}</span>
+    </div>
+  </div>
+  <hr />
+  <p class="m-3">{{ post.content }}</p>
 </div>

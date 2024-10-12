@@ -8,5 +8,6 @@ namespace MySocialService.Services.API
     {
         Task<List<PostModel>> GetAllPosts();
         Task<PostModel> CreatePost(ClaimsPrincipal claimsPrincipal, string content);
+        Task DeletePost(ClaimsPrincipal claimsPrincipal, string postId);
     }
 }
